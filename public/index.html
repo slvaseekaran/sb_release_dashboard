@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Notes Generator</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- SimpleMDE - Markdown Editor (similar to Azure Boards) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-file-alt"></i></div>
+        <h1>Release Notes Generator</h1>
+      </div>
+    </header>
+
+    <main>
+      <!-- Home Screen -->
+      <section id="home-screen">
+        <div class="button-container">
+          <button id="get-notes-btn" class="btn btn-primary">
+            GET - RELEASE NOTES
+          </button>
+          <button id="post-notes-btn" class="btn btn-primary">
+            POST - RELEASE NOTES
+          </button>
+        </div>
+      </section>
+
+      <!-- POST - Release Notes Screen -->
+      <section id="post-screen" class="hidden">
+        <div class="back-button-container">
+          <button class="btn btn-secondary back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <h2><i class="fas fa-upload"></i> POST - RELEASE NOTES</h2>
+        <div class="form-container">
+          <form id="release-form" enctype="multipart/form-data">
+            <div class="form-group">
+              <label>Previous .env file</label>
+              <div class="file-input-container" style="display: flex; align-items: center;">
+                <div style="flex-grow: 1; position: relative;">
+                  <input type="file" id="previousEnv" name="previousEnv" required>
+                  <label for="previousEnv" id="previousEnvLabel" class="file-input-label">Choose a file</label>
+                </div>
+                <button type="button" class="btn btn-secondary clear-file-btn" data-target="previousEnv" style="margin-left: 14px;">Clear</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Current .env file</label>
+              <div class="file-input-container" style="display: flex; align-items: center;">
+                <div style="flex-grow: 1; position: relative;">
+                  <input type="file" id="currentEnv" name="currentEnv" required>
+                  <label for="currentEnv" id="currentEnvLabel" class="file-input-label">Choose a file</label>
+                </div>
+                <button type="button" class="btn btn-secondary clear-file-btn" data-target="currentEnv" style="margin-left: 14px;">Clear</button>
+              </div>
+            </div>
+              <label for="azureQueryId">Azure Query ID</label>
+              <input
+                type="text"
+                id="azureQueryId"
+                name="azureQueryId"
+                placeholder="Enter Azure Query ID"
+                required
+                class="full-width-input"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-cogs"></i> Generate Release Notes
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Release Notes Results Screen -->
+      <section id="results-screen" class="hidden">
+        <div class="back-button-container">
+          <button class="btn btn-secondary back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <h2><i class="fas fa-file-alt"></i> Release Notes</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="io-amr">IO AMR Changes</button>
+          <button class="tab-btn" data-tab="sootball">Sootball Changes</button>
+          <button class="tab-btn" data-tab="azure-items">Azure Work Items</button>
+        </div>
+        
+        <div class="tab-content active" id="io-amr-content">
+          <div id="io-amr-changes"></div>
+        </div>
+        
+        <div class="tab-content" id="sootball-content">
+          <div id="sootball-changes"></div>
+        </div>
+        
+        <div class="tab-content" id="azure-items-content">
+          <div id="azure-work-items"></div>
+        </div>
+        
+        <div class="button-group">
+          <button id="post-release-btn" class="btn btn-primary">
+            <i class="fas fa-check"></i> POST RELEASE NOTES
+          </button>
+          <button id="download-btn" class="btn btn-secondary">
+            <i class="fas fa-download"></i> Download as Markdown
+          </button>
+          <button id="new-comparison-btn" class="btn btn-secondary">
+            <i class="fas fa-sync"></i> New Comparison
+          </button>
+        </div>
+      </section>
+
+      <!-- GET - Release Notes Screen -->
+      <section id="get-screen" class="hidden content-wrapper">
+        <div class="back-button-container">
+          <button class="btn btn-secondary back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <h2><i class="fas fa-list"></i> GET - RELEASE NOTES</h2>
+        <div id="versions-list" class="versions-container">
+          <!-- Versions will be loaded here -->
+          <div class="loading">Loading versions...</div>
+        </div>
+      </section>
+
+      <!-- Version Details Screen -->
+      <section id="version-details-screen" class="hidden">
+        <div class="back-button-container">
+          <button class="btn btn-secondary back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <h2 id="version-title">Release Notes</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="view-io-amr">IO AMR Changes</button>
+          <button class="tab-btn" data-tab="view-sootball">Sootball Changes</button>
+          <button class="tab-btn" data-tab="view-azure-items">Azure Work Items</button>
+        </div>
+        
+        <div class="tab-content active" id="view-io-amr-content">
+          <div id="view-io-amr-changes"></div>
+        </div>
+        
+        <div class="tab-content" id="view-sootball-content">
+          <div id="view-sootball-changes"></div>
+        </div>
+        
+        <div class="tab-content" id="view-azure-items-content">
+          <div id="view-azure-work-items"></div>
+        </div>
+        
+        <div class="button-group">
+          <button id="back-to-versions-btn" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Versions
+          </button>
+          <button id="view-download-btn" class="btn btn-secondary">
+            <i class="fas fa-download"></i> Download as Markdown
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Release Notes Generator | <a href="https://github.com/rapyuta-robotics" target="_blank">Rapyuta Robotics</a></p>
+    </footer>
+  </div>
+
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Processing repositories...</p>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
