@@ -1,0 +1,28 @@
+{
+    "name": "release-notes-api",
+    "version": "1.0.0",
+    "description": "API for comparing environment files and generating release notes",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "keywords": [
+        "release",
+        "notes",
+        "api",
+        "git"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^16.5.0",
+        "express": "^4.21.2",
+        "multer": "^1.4.5-lts.1",
+        "node-fetch": "^2.7.0",
+        "simple-git": "^3.27.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}
