@@ -3,7 +3,6 @@
 A modern web application for generating, editing, and managing release notes by comparing .env files. Designed to streamline release documentation, PR/Work Item hyperlinking, and for better navigating experience.
 
 **Features**
-
     Compare two .env files to auto-generate release notes.
     GET and POST workflows for release notes.
     Automatic hyperlinking for PRs and Azure Work Items.
@@ -11,7 +10,6 @@ A modern web application for generating, editing, and managing release notes by 
     Modern, responsive UI.
 
 **Requirements**
-
     Node.js (v14 or higher recommended)
     npm (comes with Node.js)
     Modern web browser
@@ -39,7 +37,6 @@ A modern web application for generating, editing, and managing release notes by 
 
 
 **Usage Guide:**
-
     **POST Release Notes (Generate New)**
     Use this when you want to generate new release notes by comparing two .env files:
 
@@ -77,7 +74,6 @@ A modern web application for generating, editing, and managing release notes by 
        Click Download as Markdown to export the current release notes.
 
 **Troubleshooting:**
-
     UI not styled?
     Ensure styles.css is in the public/ folder and linked in index.html.
 
