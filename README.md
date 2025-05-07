@@ -1,95 +1,97 @@
-**Release Notes Generator**
+# Release Notes Generator
 
-A modern web application for generating, editing, and managing release notes by comparing .env files. Designed to streamline release documentation, PR/Work Item hyperlinking, and for better navigation.
+A modern web application for generating, editing, and managing release notes by comparing `.env` files. This tool streamlines release documentation, PR/Work Item hyperlinking, and provides an intuitive navigation experience.
 
 ---
 
-**Features**
-- Compare two .env files to auto-generate release notes.
+## 🚀 Features
+
+- Compare two `.env` files to auto-generate release notes.
 - GET and POST workflows for release notes.
 - Automatic hyperlinking for PRs and Azure Work Items.
-- Download release notes as markdown.
-- Modern, responsive UI.
+- Export release notes as Markdown.
+- Clean, responsive user interface.
 
 ---
 
-**Requirements**
+## 🛠 Requirements
+
 - Node.js (v14 or higher recommended)
-- npm (comes with Node.js)
-- Modern web browser
+- npm (included with Node.js)
+- Modern web browser (Chrome, Firefox, Edge, etc.)
 
 ---
 
-**Installation & Setup**
+## ⚙️ Installation & Setup
 
-    Clone the repository:
-    git clone https://github.com/slvaseekaran/release-notes-app.git
-    cd release-notes-app
+```bash
+git clone https://github.com/slvaseekaran/release-notes-app.git
+cd release-notes-app
+npm install
+node server.js
+```
 
-    Install dependencies:
-    npm install
+Then, open your browser and visit:
 
-    Start the server:
-    node server.js
-
-    Open the app:
-    Visit http://localhost:3000 in your browser.
+```
+http://localhost:3000
+```
 
 ---
 
-**Running the Application:**
+## ▶️ Running the Application
 
-    The server will serve all static files from the public/ directory.
-    All frontend logic is handled in main.js. No build step is required.
-    The app is ready to use as soon as the server is running.
+- The server serves static files from the `public/` directory.
+- Frontend logic resides in `main.js` (no build step required).
+- The app is ready to use as soon as the server is running.
 
+---
 
-**Usage Guide:**
-    **POST Release Notes (Generate New)**
-    Use this when you want to generate new release notes by comparing two .env files:
+## 📘 Usage Guide
 
-    1. Navigate to the Home Screen
-       Click POST RELEASE NOTES.
+### POST Release Notes (Generate New)
 
-    2. Upload Files
-       Click Choose file next to "Previous .env file" and select your previous .env file.
-       Click Choose file next to "Current .env file" and select your current .env file.
-       If you need to change your selection, click the Clear button to unselect the file.
+1. **Navigate to Home Screen**  
+   Click **POST RELEASE NOTES**.
 
-    3. Generate Notes
-       Click Generate Release Notes.
-       The app will compare the two files and generate detailed release notes, grouped by repository.
+2. **Upload Files**  
+   - Select your previous `.env` file.  
+   - Select your current `.env` file.  
+   - Use the **Clear** button to unselect files.
 
-    4. Finalize
-       Click POST RELEASE NOTES to save the notes (if backend is connected).
-       Or click Download as Markdown to export the notes for sharing or archiving.
+3. **Generate Notes**  
+   Click **Generate Release Notes** to generate notes grouped by repository.
 
-    **GET Release Notes (View)**
-    Use this to view previously generated release notes:
+4. **Finalize**  
+   - Click **POST RELEASE NOTES** to save (backend connection required).  
+   - Or click **Download as Markdown** to export.
 
-    1. Navigate to the Home Screen
-       Click GET RELEASE NOTES.
+---
 
-    2. Browse Versions
-       View the list of available release note versions.
-       Click on a version to view its details.
+### GET Release Notes (View Existing)
 
-    3. Review & Edit
-       Use the tabs to switch between IO AMR, Sootball, and Azure Work Items.
-       All PR and Azure Work Item references are auto-linked.
+1. **Navigate to Home Screen**  
+   Click **GET RELEASE NOTES**.
 
-    4. Export
-       Click Download as Markdown to export the current release notes.
+2. **Browse Versions**  
+   View and select from a list of previously generated versions.
 
-**Troubleshooting:**
-    UI not styled?
-    Ensure styles.css is in the public/ folder and linked in index.html.
+3. **Review & Edit**  
+   - Use tabs to switch between IO AMR, Sootball, and Azure Work Items.  
+   - PRs and Azure Work Items are auto-hyperlinked.
 
-    Buttons not working?
-    Ensure main.js is loaded and there are no JavaScript errors (check browser console).
+4. **Export**  
+   Click **Download as Markdown**.
 
-    Server not running?
-    Start with node server.js and ensure you see Server running at http://localhost:3000.
+---
 
-    File input not clearing?
-    Use the Clear button next to each file input to unselect a file.
+## 🧰 Troubleshooting
+
+| Issue                     | Solution                                                                 |
+|--------------------------|--------------------------------------------------------------------------|
+| UI not styled?           | Ensure `styles.css` is in the `public/` folder and linked in `index.html`. |
+| Buttons not working?     | Confirm `main.js` is loaded and check browser console for errors.         |
+| Server not running?      | Run `node server.js` and verify it's available at `http://localhost:3000`. |
+| File input not clearing? | Click the **Clear** button next to each file input.                        |
+
+---
