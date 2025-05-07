@@ -1,18 +1,24 @@
 **Release Notes Generator**
 
-A modern web application for generating, editing, and managing release notes by comparing .env files. Designed to streamline release documentation, PR/Work Item hyperlinking, and for better navigating experience.
+A modern web application for generating, editing, and managing release notes by comparing .env files. Designed to streamline release documentation, PR/Work Item hyperlinking, and for better navigation.
+
+---
 
 **Features**
-    Compare two .env files to auto-generate release notes.
-    GET and POST workflows for release notes.
-    Automatic hyperlinking for PRs and Azure Work Items.
-    Download release notes as markdown.
-    Modern, responsive UI.
+- Compare two .env files to auto-generate release notes.
+- GET and POST workflows for release notes.
+- Automatic hyperlinking for PRs and Azure Work Items.
+- Download release notes as markdown.
+- Modern, responsive UI.
+
+---
 
 **Requirements**
-    Node.js (v14 or higher recommended)
-    npm (comes with Node.js)
-    Modern web browser
+- Node.js (v14 or higher recommended)
+- npm (comes with Node.js)
+- Modern web browser
+
+---
 
 **Installation & Setup**
 
@@ -28,6 +34,8 @@ A modern web application for generating, editing, and managing release notes by 
 
     Open the app:
     Visit http://localhost:3000 in your browser.
+
+---
 
 **Running the Application:**
 
