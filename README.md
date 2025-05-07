@@ -15,7 +15,6 @@ A modern web application for generating, editing, and managing release notes by 
     Modern web browser
 
 **Installation & Setup**
-
     Clone the repository:
     git clone https://github.com/slvaseekaran/release-notes-app.git
     cd release-notes-app
