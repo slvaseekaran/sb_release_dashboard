@@ -3,25 +3,22 @@ const path = require('path');
 const { exec } = require('child_process');
 const fetch = require('node-fetch');
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Set this in your .env
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 exports.getRepositoryReleaseNotes = async (repoUrl, previousVersion, currentVersion) => {
   const repoName = repoUrl.split('/').pop();
   const owner = repoUrl.split('/').slice(-2, -1)[0];
   const tempDir = path.join(__dirname, '../../temp', repoName);
 
-  // Clean and clone repo
   if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir, { recursive: true });
   fs.mkdirSync(tempDir, { recursive: true });
   await cloneRepository(repoUrl, tempDir);
 
-  // 1. Try to fetch GitHub Release Notes via API
   const apiRelease = await fetchGitHubRelease(owner, repoName, currentVersion);
   if (apiRelease) {
     return apiRelease;
   }
 
-  // 2. Fallback: Try to extract from CHANGELOG.md
   const changelogPath = path.join(tempDir, 'CHANGELOG.md');
   if (fs.existsSync(changelogPath)) {
     const changelog = fs.readFileSync(changelogPath, 'utf8');
@@ -29,7 +26,6 @@ exports.getRepositoryReleaseNotes = async (repoUrl, previousVersion, currentVers
     if (notes) return notes;
   }
 
-  // 3. Fallback: git log between tags
   const gitLog = await new Promise((resolve) => {
     exec(
       `cd ${tempDir} && git log ${previousVersion}..${currentVersion} --pretty=format:"%h - %s (%an)" --no-merges`,
@@ -43,7 +39,6 @@ exports.getRepositoryReleaseNotes = async (repoUrl, previousVersion, currentVers
   return gitLog || 'No release notes available';
 };
 
-// Helper: Clone repo
 function cloneRepository(repoUrl, directory) {
   return new Promise((resolve, reject) => {
     exec(`git clone --quiet ${repoUrl} ${directory}`, (error) => {
@@ -53,7 +48,6 @@ function cloneRepository(repoUrl, directory) {
   });
 }
 
-// Helper: Fetch GitHub Release Notes via API
 async function fetchGitHubRelease(owner, repo, tag) {
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`;
   const headers = {
@@ -70,7 +64,6 @@ async function fetchGitHubRelease(owner, repo, tag) {
   }
 }
 
-// Helper: Extract notes from CHANGELOG.md for a version
 function extractNotesFromChangelog(changelog, version) {
   const versionRegex = new RegExp(`^##\\s*\\[?${escapeRegExp(version)}\\]?`, 'm');
   const match = changelog.match(versionRegex);
@@ -83,7 +76,7 @@ function extractNotesFromChangelog(changelog, version) {
   return changelog.substring(start, end).trim();
 }
 
-// Utility: Escape regex special chars
+
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

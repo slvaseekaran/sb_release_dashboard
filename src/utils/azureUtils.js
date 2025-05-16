@@ -56,7 +56,6 @@ async function fetchWorkItemDetails(workItemIds) {
 // Fetch all work items from a WIQL query by Query ID
 async function fetchWorkItemsByQueryId(queryId) {
   if (!PAT) throw new Error('No Azure PAT configured');
-  // 1. Get work item IDs from the query
   const wiqlUrl = `https://dev.azure.com/${ORGANIZATION}/${PROJECT}/_apis/wit/wiql/${queryId}?api-version=7.1`;
   const wiqlRes = await fetch(wiqlUrl, {
       headers: {
@@ -69,7 +68,6 @@ async function fetchWorkItemsByQueryId(queryId) {
   const wiqlData = await wiqlRes.json();
   const workItemIds = (wiqlData.workItems || []).map(wi => wi.id);
   if (workItemIds.length === 0) return [];
-  // 2. Fetch details for these work items
   return await fetchWorkItemDetails(workItemIds);
 }
 
