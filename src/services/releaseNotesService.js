@@ -140,7 +140,7 @@ function getRepositoryInfo(key, category) {
   return {
     name: repoName,
     category,
-    url: `https://github.com/${repoConfig.orgPrefix}/${repoName}`
+    url: `git@github.com:${repoConfig.orgPrefix}/${repoName}.git`
   };
 }
 
