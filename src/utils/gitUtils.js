@@ -3,9 +3,7 @@ const path = require('path');
 const { exec } = require('child_process');
 const fetch = require('node-fetch');
 
-// Utility to run a shell command and return a promise
 function execWithSshAgent(cmd, options = {}) {
-  // Forward SSH agent environment variables if present
   options.env = {
     ...process.env,
     SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
@@ -19,12 +17,10 @@ function execWithSshAgent(cmd, options = {}) {
   });
 }
 
-// Clone a repo using SSH URL (e.g., [email protected]:org/repo.git)
 function cloneRepository(sshUrl, directory) {
-  return execWithSshAgent(`git clone --quiet ${sshUrl} ${directory}`);
+  return execWithSshAgent(`git clone ${sshUrl} ${directory}`);
 }
 
-// Fetch release notes from GitHub API (still uses HTTPS but for public info)
 async function fetchGitHubRelease(owner, repo, tag) {
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`;
   try {
@@ -37,7 +33,6 @@ async function fetchGitHubRelease(owner, repo, tag) {
   }
 }
 
-// Extract release notes from CHANGELOG.md between versions
 function extractNotesFromChangelog(changelog, version) {
   const versionRegex = new RegExp(`^##\\s*\\[?${escapeRegExp(version)}\\]?`, 'm');
   const match = changelog.match(versionRegex);
@@ -54,23 +49,19 @@ function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// Main: get release notes for a repo between two tags
 exports.getRepositoryReleaseNotes = async (sshUrl, previousVersion, currentVersion) => {
   const repoName = sshUrl.split('/').pop().replace('.git', '');
   const owner = sshUrl.split(':')[1].split('/')[0];
   const tempDir = path.join(__dirname, '../../temp', repoName);
 
-  // Clean old clone if exists
   if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
   fs.mkdirSync(tempDir, { recursive: true });
 
   await cloneRepository(sshUrl, tempDir);
 
-  // Try GitHub API for release notes (optional)
   const apiRelease = await fetchGitHubRelease(owner, repoName, currentVersion);
   if (apiRelease) return apiRelease;
 
-  // Try extracting from CHANGELOG.md
   const changelogPath = path.join(tempDir, 'CHANGELOG.md');
   if (fs.existsSync(changelogPath)) {
     const changelog = fs.readFileSync(changelogPath, 'utf8');
@@ -78,7 +69,6 @@ exports.getRepositoryReleaseNotes = async (sshUrl, previousVersion, currentVersi
     if (notes) return notes;
   }
 
-  // Fallback: git log between tags
   try {
     const gitLog = await execWithSshAgent(
       `cd ${tempDir} && git log ${previousVersion}..${currentVersion} --pretty=format:"%h - %s (%an)" --no-merges`
@@ -89,7 +79,6 @@ exports.getRepositoryReleaseNotes = async (sshUrl, previousVersion, currentVersi
   }
 };
 
-// (Optional) Export a stub for getPRsBetweenTags if needed elsewhere
 exports.getPRsBetweenTags = async function () {
   throw new Error('getPRsBetweenTags not implemented');
 };
