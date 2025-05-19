@@ -186,6 +186,12 @@
                 </button>
             </div>
         </section>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay">
+            <div class="spinner"></div>
+            <p>Processing repositories...</p>
+        </div>
     </main>
 
     <!-- Application Footer -->
@@ -195,12 +201,6 @@
             <!-- You can add more links or information here if needed -->
         </div>
     </footer>
-
-    <!-- Loading Overlay: Displayed during asynchronous operations -->
-    <div id="loading-overlay" class="hidden" aria-live="assertive" aria-atomic="true" role="alert">
-        <div class="spinner" aria-hidden="true"></div>
-        <p id="loading-message">Processing repositories...</p>
-    </div>
 
     <!-- JavaScript file linked at the end of the body for better performance -->
     <script src="js/main.js" defer></script>

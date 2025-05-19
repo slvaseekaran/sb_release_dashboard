@@ -73,14 +73,26 @@ document.addEventListener('DOMContentLoaded', function() {
       navigateTo('post-screen');
     });
   
-    backToVersionsBtn.addEventListener('click', function() {
-      navigateTo('get-screen');
-    });
-  
     // Add event listeners for all back buttons
     backBtns.forEach(btn => {
       btn.addEventListener('click', navigateBack);
     });
+
+    backToVersionsBtn.addEventListener('click', function() {
+      navigationHistory = ['home-screen', 'release-type-screen', 'get-screen'];
+      navigateTo('get-screen');
+      if (selectedGetReleaseType) {
+          loadVersions(selectedGetReleaseType);
+      }
+    });
+
+    const backToReleaseTypesBtn = document.getElementById('back-to-release-types-btn');
+    if (backToReleaseTypesBtn) {
+        backToReleaseTypesBtn.addEventListener('click', function() {
+            navigationHistory = ['home-screen', 'release-type-screen'];
+            navigateTo('release-type-screen');
+        });
+    }
   
     newComparisonBtn.addEventListener('click', function() {
       navigateTo('post-screen');
