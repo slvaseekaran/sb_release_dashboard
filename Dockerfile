@@ -23,5 +23,9 @@ RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 # Expose the port your app runs on
 EXPOSE 3000
 
-# Start the app
-CMD ["node", "server.js"]
+# Copy the entrypoint script into the image
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Use the script as entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
