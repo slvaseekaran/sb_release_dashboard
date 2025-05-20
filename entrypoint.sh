@@ -5,7 +5,7 @@ set -e
 mkdir -p /root/.ssh
 
 # Write the private key from environment variable
-echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
+echo "$SSH_PRIVATE_KEY" | sed 's/\\n/\n/g' > /root/.ssh/id_rsa
 
 # Set correct permissions
 chmod 600 /root/.ssh/id_rsa
