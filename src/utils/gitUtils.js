@@ -3,28 +3,36 @@ const path = require('path');
 const { exec } = require('child_process');
 const fetch = require('node-fetch');
 
-function execWithSshAgent(cmd, options = {}) {
-  options.env = {
-    ...process.env,
-    SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
-    SSH_AGENT_PID: process.env.SSH_AGENT_PID,
-  };
+const GITHUB_PAT = process.env.GITHUB_PAT; 
+const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'x-access-token'; 
+
+function getHttpsUrlWithAuth(httpsUrl) {
+  if (!GITHUB_PAT) throw new Error('GITHUB_PAT not set');
+  const urlObj = new URL(httpsUrl);
+  urlObj.username = GITHUB_USERNAME;
+  urlObj.password = GITHUB_PAT;
+  return urlObj.toString();
+}
+
+function cloneRepository(httpsUrl, directory) {
+  const urlWithAuth = getHttpsUrlWithAuth(httpsUrl);
   return new Promise((resolve, reject) => {
-    exec(cmd, options, (error, stdout, stderr) => {
+    exec(`git clone ${urlWithAuth} ${directory}`, (error, stdout, stderr) => {
       if (error) return reject(new Error(stderr || error.message));
       resolve(stdout);
     });
   });
 }
 
-function cloneRepository(sshUrl, directory) {
-  return execWithSshAgent(`git clone ${sshUrl} ${directory}`);
-}
-
 async function fetchGitHubRelease(owner, repo, tag) {
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`;
   try {
-    const res = await fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github+json' } });
+    const res = await fetch(apiUrl, {
+      headers: { 
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `token ${GITHUB_PAT}` 
+      }
+    });
     if (!res.ok) return null;
     const data = await res.json();
     return data.body || null;
@@ -49,30 +57,31 @@ function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-exports.getRepositoryReleaseNotes = async (sshUrl, previousVersion, currentVersion) => {
-  const repoName = sshUrl.split('/').pop().replace('.git', '');
-  const owner = sshUrl.split(':')[1].split('/')[0];
+exports.getRepositoryReleaseNotes = async (httpsUrl, previousVersion, currentVersion) => {
+  const repoName = httpsUrl.split('/').pop().replace('.git', '');
+  const owner = httpsUrl.split('/')[3]; 
   const tempDir = path.join(__dirname, '../../temp', repoName);
-
   if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
   fs.mkdirSync(tempDir, { recursive: true });
-
-  await cloneRepository(sshUrl, tempDir);
-
+  await cloneRepository(httpsUrl, tempDir);
   const apiRelease = await fetchGitHubRelease(owner, repoName, currentVersion);
   if (apiRelease) return apiRelease;
-
   const changelogPath = path.join(tempDir, 'CHANGELOG.md');
   if (fs.existsSync(changelogPath)) {
     const changelog = fs.readFileSync(changelogPath, 'utf8');
     const notes = extractNotesFromChangelog(changelog, currentVersion);
     if (notes) return notes;
   }
-
   try {
-    const gitLog = await execWithSshAgent(
-      `cd ${tempDir} && git log ${previousVersion}..${currentVersion} --pretty=format:"%h - %s (%an)" --no-merges`
-    );
+    const gitLog = await new Promise((resolve, reject) => {
+      exec(
+        `cd ${tempDir} && git log ${previousVersion}..${currentVersion} --pretty=format:"%h - %s (%an)" --no-merges`,
+        (error, stdout, stderr) => {
+          if (error) return reject(new Error(stderr || error.message));
+          resolve(stdout);
+        }
+      );
+    });
     return gitLog || 'No release notes available';
   } catch (err) {
     return 'No release notes available';

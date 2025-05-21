@@ -143,7 +143,6 @@ h2 i {
   font-size: 24px;
 }
 
-/* Form Styles */
 .form-group {
   margin-bottom: 25px;
 }
@@ -156,7 +155,6 @@ label {
   font-size: 16px;
 }
 
-/* File Input Styles */
 .file-input-container {
   position: relative;
   overflow: hidden;
@@ -199,7 +197,6 @@ input[type="file"] {
   color: var(--primary-color);
 }
 
-/* Button Styles */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -263,7 +260,6 @@ input[type="file"] {
   transform: translateY(-2px);
 }
 
-/* Clear Button Styles */
 .clear-btn {
   background-color: transparent;
   color: var(--dark-color);
@@ -282,7 +278,6 @@ input[type="file"] {
   border-color: var(--primary-color);
 }
 
-/* Button Group Styles */
 .button-group {
   display: flex;
   gap: 15px;
@@ -303,7 +298,6 @@ input[type="file"] {
   font-size: 18px;
 }
 
-/* Tab Styles */
 .tabs {
   display: flex;
   border-bottom: 2px solid var(--border-color);
@@ -357,7 +351,6 @@ input[type="file"] {
   display: block;
 }
 
-/* Repo Item Styles */
 .repo-item {
   margin-bottom: 25px;
   padding-bottom: 25px;
@@ -416,7 +409,6 @@ input[type="file"] {
   text-decoration: underline;
 }
 
-/* Error Message Styles */
 .error-message {
   color: var(--primary-color);
   font-style: italic;
@@ -424,7 +416,6 @@ input[type="file"] {
   font-size: 14px;
 }
 
-/* Versions Grid Styles */
 .versions-grid {
   display: flex;
   flex-direction: column;
@@ -486,7 +477,6 @@ input[type="file"] {
   box-shadow: 0 5px 15px rgba(230, 57, 70, 0.2);
 }
 
-/* Loading Styles */
 .loading {
   text-align: center;
   padding: 30px;
@@ -530,7 +520,6 @@ input[type="file"] {
   100% { transform: rotate(360deg); }
 }
 
-/* Hidden Class */
 .hidden {
   display: none !important;
 }
@@ -575,7 +564,6 @@ input[type="file"] {
   text-decoration: underline;
 }
 
-/* Work Items Styles */
 .work-items-container {
   display: flex;
   flex-direction: column;
@@ -608,7 +596,6 @@ input[type="file"] {
   color: var(--dark-color);
 }
 
-/* Edit Button Styles */
 .edit-btn {
   padding: 6px 12px;
   font-size: 14px;
@@ -625,7 +612,6 @@ input[type="file"] {
   border-color: var(--primary-color);
 }
 
-/* Edit Controls Styles */
 .edit-controls {
   display: flex;
   gap: 10px;
@@ -633,14 +619,12 @@ input[type="file"] {
   margin-bottom: 15px;
 }
 
-/* Work Items Grouped Container Styles */
 .work-items-grouped-container {
   display: flex;
   flex-direction: column;
   gap: 35px;
 }
 
-/* Work Item Group Block Styles */
 .work-item-group-block {
   background: var(--light-color);
   border-radius: 10px;
@@ -655,7 +639,6 @@ input[type="file"] {
   transform: translateY(-3px);
 }
 
-/* Work Item Group Title Styles */
 .work-item-group-title {
   color: var(--primary-color);
   font-size: 20px;
@@ -669,7 +652,6 @@ input[type="file"] {
   border-bottom: 2px solid #f3f3f3;
 }
 
-/* Work Item Table Styles */
 .work-item-table {
   width: 100%;
   border-collapse: collapse;
@@ -678,7 +660,6 @@ input[type="file"] {
   overflow: hidden;
 }
 
-/* Empty State Styles */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -696,7 +677,6 @@ input[type="file"] {
   margin-bottom: 15px;
 }
 
-/* Release Type Button Styles */
 .release-type-btn {
   padding: 12px 20px;
   background-color: var(--light-color);
@@ -718,7 +698,6 @@ input[type="file"] {
   border-color: var(--primary-color);
 }
 
-/* Version Bar Button Styles */
 .version-bar-btn {
   display: inline-block;
   background-color: var(--primary-color);
@@ -746,7 +725,6 @@ input[type="file"] {
   transform: translateY(0);
 }
 
-/* Footer Styles */
 footer {
   text-align: center;
   padding: 30px;
@@ -767,7 +745,6 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .container {
     width: 95%;
@@ -839,7 +816,6 @@ footer a:hover {
   }
 }
 
-/* Full-width input styles */
 .full-width-input {
   width: 100%;
   padding: 12px;

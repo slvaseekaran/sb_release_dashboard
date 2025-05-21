@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
       navigateTo('post-screen');
     });
   
-    // Add event listeners for all back buttons
     backBtns.forEach(btn => {
       btn.addEventListener('click', navigateBack);
     });
@@ -104,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
       currentReleaseData = null;
     });
   
-    // Update file input handlers to check form readiness
     previousEnvInput.addEventListener('change', function() {
       updateFileLabel(previousEnvInput, previousEnvLabel);
       checkFormReady();
@@ -114,8 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         checkFormReady();
     });
   
-  
-    // Also reset selection on form reset
     releaseForm.addEventListener('reset', function() {
       selectedReleaseType = null;
       releaseTypeInput.value = '';
@@ -127,15 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
     releaseTypeSelectBtns.forEach(btn => {
       btn.addEventListener('click', function() {
         selectedGetReleaseType = this.getAttribute('data-type');
-        // Show selected type label on versions page
         let label = '';
         if (selectedGetReleaseType === 'rc') label = ' - RC RELEASE NOTES';
         else if (selectedGetReleaseType === 'minor') label = ' - MINOR RELEASE NOTES';
         else if (selectedGetReleaseType === 'major') label = ' - MAJOR RELEASE NOTES';
         selectedReleaseTypeLabel.textContent = label;
-        // Now show the versions page, filtered by type
         navigateTo('get-screen');
-        loadVersions(selectedGetReleaseType); // Pass the selected type
+        loadVersions(selectedGetReleaseType);
       });
     });
   
@@ -197,14 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle release type button clicks
     document.querySelectorAll('.release-type-btn').forEach(btn => {
       btn.addEventListener('click', function() {
-        // Remove 'selected' from all buttons
         document.querySelectorAll('.release-type-btn').forEach(b => b.classList.remove('selected'));
-        // Add 'selected' to clicked button
         this.classList.add('selected');
-        // Set hidden input value
         releaseTypeInput.value = this.getAttribute('data-type');
         selectedReleaseType = this.getAttribute('data-type');
-        // Enable generate button if files are selected too
         checkFormReady();
       });
     });
@@ -270,20 +260,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tab switching
     tabButtons.forEach(button => {
       button.addEventListener('click', function() {
-        // Get the parent tabs container
         const tabsContainer = this.closest('.tabs');
-        // Get all tab buttons in this container
         const buttons = tabsContainer.querySelectorAll('.tab-btn');
-        // Get the tab content container
         const tabContentsContainer = this.closest('section');
-        // Get all tab contents in this section
         const tabContents = tabContentsContainer.querySelectorAll('.tab-content');
         
-        // Remove active class from all buttons and contents
         buttons.forEach(btn => btn.classList.remove('active'));
         tabContents.forEach(content => content.classList.remove('active'));
-        
-        // Add active class to clicked button and corresponding content
+
         this.classList.add('active');
         const tabId = this.getAttribute('data-tab');
         tabContentsContainer.querySelector(`#${tabId}-content`).classList.add('active');
@@ -313,22 +297,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Extract major and minor version from a version string
     function extractMajorMinor(versionStr) {
-      // Handle case when version is in the format "Sootballs 3.3.1-rc1"
       if (versionStr.includes("Sootballs")) {
-        // Match the first two version components (major.minor)
         const match = versionStr.match(/Sootballs\s+(\d+)\.(\d+)/);
         if (match) {
           return { major: parseInt(match[1]), minor: parseInt(match[2]) };
         }
-        
-        // Fallback for just major version (Sootballs 3)
+
         const majorMatch = versionStr.match(/Sootballs\s+(\d+)/);
         if (majorMatch) {
           return { major: parseInt(majorMatch[1]), minor: 0 };
         }
       }
-      
-      // Regular version format like "3.4.1-rc0"
+
       const match = versionStr.match(/^(\d+)\.(\d+)/);
       if (match) {
         return { major: parseInt(match[1]), minor: parseInt(match[2]) };
@@ -374,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
           group.versions.forEach(versionInfo => {
             const btn = document.createElement('button');
             btn.classList.add('version-btn');
-            btn.textContent = versionInfo.version.replace(/^Sootballs\s*/, ''); // Remove prefix if present
+            btn.textContent = versionInfo.version.replace(/^Sootballs\s*/, '');
             btn.addEventListener('click', () => {
               loadVersionDetails(versionInfo.version, releaseType);
             });
@@ -396,16 +376,16 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadVersionDetails(versionName, releaseType) {
       showLoading();
       try {
-          const response = await fetch(`/api/release-notes/${releaseType}/${versionName}`); // Updated endpoint
+          const response = await fetch(`/api/release-notes/${releaseType}/${versionName}`); 
           if (!response.ok) {
               const errorData = await response.json();
               throw new Error(errorData.error || `Failed to load release notes for ${versionName}`);
           }
-          const data = await response.json(); // Expects { version, releaseNotes }
+          const data = await response.json(); 
   
-          currentViewVersion = data.releaseNotes; // Store for download and display
+          currentViewVersion = data.releaseNotes; 
   
-          versionTitle.textContent = `Release Notes: ${versionName}`; // Update title on details page
+          versionTitle.textContent = `Release Notes: ${versionName}`; 
   
           displayReleaseNotes(
               currentViewVersion,
@@ -413,10 +393,10 @@ document.addEventListener('DOMContentLoaded', function() {
               viewSootballChanges,
               viewAzureWorkItems
           );
-          navigateTo('version-details-screen'); // Navigate to the screen showing details
+          navigateTo('version-details-screen'); 
   
       } catch (error) {
-          alert('Error loading version details: ' + error.message); // Or display error more gracefully
+          alert('Error loading version details: ' + error.message); 
           console.error('Error in loadVersionDetails:', error);
       } finally {
           hideLoading();
@@ -598,7 +578,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return bMinor - aMinor;
       });
     
-      // Return an array of { group: "3.5", versions: [...] } sorted by group
       return sortedGroupKeys.map(key => ({
         group: key,
         versions: groups[key]
